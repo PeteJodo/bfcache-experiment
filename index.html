@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BFCache Experiment</title>
+</head>
+<style type="text/css">
+    section * {
+        display: inline-block;
+    }
+    section p {
+        margin-left: 10px;
+    }
+</style>
+<body>
+    <a href="/another">Go to another page on this domain</a>
+    <section id="section0"><h3></h3><p></p></section>
+    <section id="section1"><h3></h3><p></p></section>
+    <section id="section2"><h3></h3><p></p></section>
+</body>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.ajax({
+            url: "/rand/0",
+            cache: false,
+            context: $('#section0'),
+        }).done(printResponse)
+
+        $.ajax({
+            url: "/rand/1",
+            cache: false,
+            context: $('#section1'),
+        }).done(printResponse)
+
+        $.ajax({
+            url: "/rand/2",
+            cache: false,
+            context: $('#section2'),
+        }).done(printResponse)
+    });
+
+    function printResponse(data) {
+        var cacheControl = data.cache_control ? data.cache_control : "No cache control headers";
+        this.children("h3").text(cacheControl + " -> ");
+        this.children("p").text(data.rand);
+    }
+</script>
+</html>
